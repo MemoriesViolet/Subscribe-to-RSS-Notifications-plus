@@ -10,6 +10,40 @@ from http.client import RemoteDisconnected
 import json
 import re
 
+# 在文件顶部添加
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+# 修改获取 Issues 的函数
+def get_subscribers_from_issues():
+    token = os.environ.get('GITHUB_TOKEN')
+    if not token:
+        print("未找到 GITHUB_TOKEN")
+        return []
+
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/issues"
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        issues = response.json()
+    except Exception as e:
+        print(f"获取 Issues 失败: {str(e)}")
+        return []
+
+    subscribers = []
+    for issue in issues:
+        if isinstance(issue, dict) and 'title' in issue:
+            title = issue['title'].lower()
+            if title.startswith('订阅 rss 更新通知'):
+                subscribers.append(issue['user']['login'])
+    return subscribers
+
 # 创建保存检查时间文件的目录
 os.makedirs('check', exist_ok=True)
 
