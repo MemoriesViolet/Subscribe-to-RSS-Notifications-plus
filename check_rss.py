@@ -17,7 +17,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 # 修改获取 Issues 的函数
 def get_subscribers_from_issues():
-    token = os.environ.get('GITHUB_TOKEN')
+    token = os.environ.get('GH_PAT')
     if not token:
         print("未找到 GITHUB_TOKEN")
         return []
