@@ -21,8 +21,6 @@ print(f"读取到的 RSS 源: {rss_list}")
 
 # 特殊解析的RSS链接列表
 special_rss_urls = [
-    'https://tianli-blog.club/feed/',
-    'https://www.anxkj.top/feed/',
     'https://wechat2rss.xlab.app/feed/c0f0ee37039f7da55ed6ed4ae160d11af1915007.xml'
     # 在这里添加其他需要特殊处理的RSS链接
 ]
